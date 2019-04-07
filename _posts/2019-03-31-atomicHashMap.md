@@ -107,7 +107,7 @@ atomicHashMap.h只是声明
   template <class ContT, class IterVal, class SubIt>
   struct ahm_iterator;
 
-1. insert的实现是，先lock住，再插入，可以保证不会冲突
+1. insert的实现是，先lock住，再插入，可以保证不会冲突。而且空间大小是提前分配好的，后来直接在空间上place new
 2. find就是按照subMap的顺序查找
 3. erase只是把key设置成erased状态，而不改变value，就保证了多线程的访问。比如一个线程开始访问value，另一个erase吧这个key，前面一个线程的value也不会有错。
 4. update 是可以冲突的

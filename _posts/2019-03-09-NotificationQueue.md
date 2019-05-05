@@ -127,23 +127,4 @@ tick用来获得是否可写可读slot的权利，slot中的turn用来决定是�
 为什么使用turn？简单地使用isWrite不可以么？
 mpmcqueue像一个链表，每个slot独立的评估每个读写
 
-dstate_ 含有一个seqLock位，写优先(tryExpand优先)
-MPMCQueue以10为开始，10倍速的增长，直到capacity为止
-
-
-  ClosedArray* closed_; 使用closed来保存已经关闭的buf，每当buf被expand后，原来的buf被保存在closed_中
-
-
-    /// Dynamic state. A packed seqlock and ticket offset
-  Atom<uint64_t> dstate_;
-  seqlock用来expand的时候互斥写
-  offset:
-      uint64_t ticket = 1 + std::max(this->pushTicket_.load(), this->popTicket_.load());
-      this->dstate_.store((ticket << kSeqlockBits) + (2 * (index + 1)));
-      ticket即是offset
-  如果ticket >= offset，表示是后面的访问
-  如果ticket < offset，表示访问的是closed slot
-
-tryObtainReadyPushTicket
-如果slot无法写入，就表示写满了，即需要expand
 

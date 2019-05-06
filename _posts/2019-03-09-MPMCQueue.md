@@ -147,3 +147,12 @@ MPMCQueue以10为开始，10倍速的增长，直到capacity为止
 tryObtainReadyPushTicket
 如果slot无法写入，就表示写满了，即需要expand
 
+Key points:
+1. slot的顺序访问都是独立的cache line，用stride进行实现
+2. 是否可以read,write，不用比较读写指针，简单的slot中就可以区分，这样就保证了不会每个访问都有查read point和write point，读写相互独立
+
+
+如果queue只有一个写者，其实可以不用push_tick
+如果只有一个读者，也可以不用pop_tick
+push_tick和pop_tick分别是用来同步读者与读者，写者与写者的
+

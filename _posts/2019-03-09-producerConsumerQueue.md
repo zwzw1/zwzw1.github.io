@@ -18,3 +18,6 @@ read
 
 write
 使用readIndex和writeIndex来判断是否是满和空
+
+key:
+注意readIndex和writeIndex必须在不同的cacheline 

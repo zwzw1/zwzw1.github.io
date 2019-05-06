@@ -19,3 +19,6 @@ tags: C++ folly
 
 ThreadCachedInt
 
+seqlock
+futex
+
